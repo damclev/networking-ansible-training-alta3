@@ -1,0 +1,25 @@
+# "https://quotes.alakhpc.com/quotes?show=Brooklyn+Nine-Nine&short=true?show=Brooklyn%20Nine-Nine"
+#                                                                      ^ extra question mark, should be a &
+
+---
+- name: TV Quotes Playbook
+  hosts: localhost
+
+  vars:
+    baseurl: "https://quotes.alakhpc.com/quotes" #  --> having this in the baseurl added it in twice ?show=Brooklyn+Nine-Nine&short=true"
+    show_name: "Brooklyn%20Nine-Nine"
+
+  tasks:
+    - debug:
+        msg: "{{ baseurl }}?show={{ show_name }}"
+          #                ^
+    - name: Get a random quote from the API
+      uri:
+        url: "{{ baseurl }}?show={{ show_name }}"
+          #                ^ made a change here
+      register: quote_response
+
+    - name: Print the whole quote response
+      debug:
+        var: quote_response
+
